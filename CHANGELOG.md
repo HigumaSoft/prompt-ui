@@ -1,5 +1,11 @@
 # prompt-ui
 
+## 0.1.4
+
+### Patch Changes
+
+- e8db6ed: Debug ci
+
 ## 0.1.3
 
 ### Patch Changes
