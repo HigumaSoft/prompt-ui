@@ -1,5 +1,11 @@
 # prompt-ui
 
+## 0.1.3
+
+### Patch Changes
+
+- 1172709: Debug workflow
+
 ## 0.1.2
 
 ### Patch Changes
