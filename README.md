@@ -33,7 +33,7 @@ yarn add prompt-ui
 ## Usage
 
 ```
-import { Prompt } from "prompt-ui";
+import { PromptShell } from "prompt-ui";
 
 function App(props) {
   // Define commands here
@@ -42,7 +42,7 @@ function App(props) {
   };
 
   return (
-    <Prompt
+    <PromptShell
       commands={commands}
     />
   );
@@ -52,7 +52,7 @@ function App(props) {
 Also make sure to wrap the main mount point around the `PromptContextProvider`. This retains the state even when the component is unmounted and then mounted back:
 
 ```
-import { PromptContextProvider } from "react-terminal";
+import { PromptContextProvider } from "prompt-ui";
 
 ReactDOM.render(
   <PromptContextProvider>
@@ -62,12 +62,24 @@ ReactDOM.render(
 );
 ```
 
+### Add an HTML element to the page
+
+Create an HTML page, or edit an existing one, and add the following within the body tags:
+
+```html
+    <prompt TODO></prompt>
+    <script src="https://unpkg.com/prompt-ui> </script>
+```
+
+Open the HTML file in your browser, and your prompt interface will be displayed on page.
+
+
 ## Creating custom themes
 
 The component comes with few in-built themes: `light`, `dark`. You can also create custom themes by passing `themes` parameter in props, as follows:
 
 ```
-<ReactTerminal
+<PromptShell
   commands={commands}
   settings={settings}
 />
@@ -79,7 +91,7 @@ The component comes with few in-built themes: `light`, `dark`. You can also crea
 | -------------- | ---------------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
 | `commands`     | List of commands to be provided as a key value pair where value can be either a string, JSX/HTML tag or callback | null                                     |
 | `errorMessage` | Message to show when unidentified command executed, can be either a string, JSX/HTML tag or callback             | "not found!"                             |
-| `settings`     | Terminal settings defining the appearance and behavior of the terminal. This includes properties such as the prompt displayed at the beginning of input and the theme applied to the terminal interface. See [Default Settings](#settings) for default values and configurations.                                                                                                | null |
+| `settings`     | Prompt settings defining the appearance and behavior of the Prompt. This includes properties such as the prompt displayed at the beginning of input and the theme applied to the PromptShell interface. See [Default Settings](#settings) for default values and configurations.                                                                                                | null |
 
 ### Settings
 
