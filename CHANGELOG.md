@@ -1,5 +1,11 @@
 # prompt-ui
 
+## 0.1.2
+
+### Patch Changes
+
+- 50c2d38: Add publish to nmp to workflow
+
 ## 0.1.1
 
 ### Patch Changes
