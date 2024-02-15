@@ -1,7 +1,12 @@
 # prompt-ui
 
 <p align="center">
- TODO badges
+  <a href="https://www.npmjs.com/package/prompt-ui">
+  <img src="https://img.shields.io/npm/v/prompt-ui" alt="npm">
+  </a>
+  <a href="https://github.com/charopevez/prompt-ui/blob/main/LICENSE">
+  <img src="https://img.shields.io/github/license/charopevez/prompt-ui" alt="license">
+  </a>
 </p>
 
 <p align="center">
@@ -73,7 +78,6 @@ Create an HTML page, or edit an existing one, and add the following within the b
 
 Open the HTML file in your browser, and your prompt interface will be displayed on page.
 
-
 ## Creating custom themes
 
 The component comes with few in-built themes: `light`, `dark`. You can also create custom themes by passing `themes` parameter in props, as follows:
@@ -87,17 +91,17 @@ The component comes with few in-built themes: `light`, `dark`. You can also crea
 
 ## Props
 
-| name           | description                                                                                                      | default                                  |
-| -------------- | ---------------------------------------------------------------------------------------------------------------- | ---------------------------------------- |
-| `commands`     | List of commands to be provided as a key value pair where value can be either a string, JSX/HTML tag or callback | null                                     |
-| `errorMessage` | Message to show when unidentified command executed, can be either a string, JSX/HTML tag or callback             | "not found!"                             |
-| `settings`     | Prompt settings defining the appearance and behavior of the Prompt. This includes properties such as the prompt displayed at the beginning of input and the theme applied to the PromptShell interface. See [Default Settings](#settings) for default values and configurations.                                                                                                | null |
+| name           | description                                                                                                                                                                                                                                                                      | default      |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ |
+| `commands`     | List of commands to be provided as a key value pair where value can be either a string, JSX/HTML tag or callback                                                                                                                                                                 | null         |
+| `errorMessage` | Message to show when unidentified command executed, can be either a string, JSX/HTML tag or callback                                                                                                                                                                             | "not found!" |
+| `settings`     | Prompt settings defining the appearance and behavior of the Prompt. This includes properties such as the prompt displayed at the beginning of input and the theme applied to the PromptShell interface. See [Default Settings](#settings) for default values and configurations. | null         |
 
 ### Settings
 
 ```typescript
 interface Settings {
-  prompt: "$"
+  prompt: "$";
   theme: Theme;
   // TODO
 }

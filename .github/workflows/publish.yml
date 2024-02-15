@@ -7,6 +7,12 @@ on:
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  packages: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -14,21 +20,22 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
         with:
-          node-version: '20.x'
-          registry-url: 'https://registry.npmjs.org'
+          node-version: "20.x"
+          registry-url: "https://registry.npmjs.org"
       - run: npm ci
-      - run: npm run bundle:standalone
+      - name: Build standalone bundle
+        run: npm run bundle:standalone
 
-  # publish:
-  #   needs: build
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - uses: actions/setup-node@v3
-  #       with:
-  #         node-version: '20.x'
-  #         registry-url: 'https://registry.npmjs.org'
-  #     - run: npm ci
-  #     - run: npm publish
-  #       env:
-  #         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - run: npm ci
+      - name: Check for changesets
+        id: check_changesets
+        run: npx changeset status
+      - name: Publish package if changesets found
+        if: steps.check_changesets.outputs.has_changesets == 'true'
+        run: npx changeset version && npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
