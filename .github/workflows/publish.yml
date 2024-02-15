@@ -29,7 +29,6 @@ jobs:
         id: check_changesets
         run: npx changeset status
       - name: Publish package if changesets found
-        if: steps.check_changesets.outputs.has_changesets == 'true'
         run: npx changeset version && npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
