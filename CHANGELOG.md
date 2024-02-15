@@ -1,5 +1,11 @@
 # prompt-ui
 
+## 0.1.5
+
+### Patch Changes
+
+- 3d9122a: CI test
+
 ## 0.1.4
 
 ### Patch Changes
