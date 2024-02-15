@@ -2,4 +2,4 @@
 "prompt-ui": patch
 ---
 
-Updated README.md
+Update workflow
