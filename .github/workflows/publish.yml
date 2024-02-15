@@ -15,9 +15,11 @@ permissions:
 
 jobs:
   publish:
+    if: github.event.pull_request.merged == false
     outputs:
       changes: ${{ steps.version.outputs.changes }}
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
