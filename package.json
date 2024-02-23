@@ -7,8 +7,10 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "e2e": "cypress run",
     "bundle:standalone": "webpack --mode=production",
-    "release:standalone": "webpack --mode=production && changeset publish --access public"
+    "release:standalone": "webpack --mode=production && changeset publish --access public",
+    "cy:open": "cypress open"
   },
   "files": [
     "dist",
@@ -36,6 +38,7 @@
     "@changesets/cli": "^2.27.1",
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",
+    "cypress": "^13.6.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "ts-loader": "^9.5.1",
