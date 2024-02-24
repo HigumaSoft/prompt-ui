@@ -7,6 +7,7 @@
   "types": "./dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint --fix \"src/**/*.{js,ts,tsx}\" --cache",
     "e2e": "cypress run",
     "bundle:standalone": "webpack --mode=production",
     "release:standalone": "webpack --mode=production && changeset publish --access public",
@@ -36,15 +37,22 @@
   "license": "MIT",
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
+    "@types/node": "^20.11.20",
     "@types/react": "^18.2.55",
     "@types/react-dom": "^18.2.19",
+    "@typescript-eslint/eslint-plugin": "^7.0.2",
+    "@typescript-eslint/parser": "^7.0.2",
     "cypress": "^13.6.6",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react": "^7.33.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "ts-loader": "^9.5.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5.3.3",
     "webpack": "^5.90.1",
-    "webpack-cli": "^5.1.4"
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.0.2"
   },
   "peerDependencies": {
     "react": "^18.2.0",
