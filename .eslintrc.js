@@ -7,5 +7,10 @@ module.exports = {
     plugins: ['@typescript-eslint'],
     rules: {
         // Add custom rules here if needed
-    }
+    },
+    settings: {
+        react: {
+            version: 'detect',
+        },
+    },
 }

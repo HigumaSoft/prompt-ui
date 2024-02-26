@@ -5,17 +5,21 @@ function root(filename: string) {
 }
 
 module.exports = {
-  entry: "./playground/playground.tsx",
+  entry: root("playground/playground.tsx"),
   output: {
     path: root("dist"),
     globalObject: "this",
     filename: "playground.bundle.js", // Output filename
   },
   devServer: {
+    static: root("playground"),
     compress: true,
     historyApiFallback: true,
     port: 39999,
     open: true,
+  },
+  stats: {
+    children: true,
   },
   module: {
     rules: [
@@ -24,7 +28,7 @@ module.exports = {
         use: {
           loader: "ts-loader",
           options: {
-            configFile: "../tsconfig.json",
+            configFile: "tsconfig.json",
           },
         },
         exclude: /node_modules/,
@@ -32,6 +36,6 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: [".tsx", ".ts", ".js"],
+    extensions: [".tsx", ".ts", ".js", "json"],
   },
 };
