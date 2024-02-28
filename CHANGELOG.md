@@ -1,5 +1,11 @@
 # prompt-ui
 
+## 0.1.6
+
+### Patch Changes
+
+- 9b825b9: Added basic functionality
+
 ## 0.1.5
 
 ### Patch Changes
