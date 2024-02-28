@@ -1,3 +1,4 @@
+/// <reference types="cypress" />
 describe("Standalone", () => {
   const basicCheck = (name: string, url: string) => {
     describe(name, () => {

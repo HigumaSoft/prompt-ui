@@ -4,7 +4,7 @@ module.exports = {
     },
     parser: '@typescript-eslint/parser',
     extends: ['plugin:react/recommended', 'plugin:@typescript-eslint/recommended'],
-    plugins: ['@typescript-eslint'],
+    plugins: ['@typescript-eslint', 'cypress'],
     rules: {
         // Add custom rules here if needed
     },

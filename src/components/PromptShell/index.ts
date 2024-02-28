@@ -1,1 +1,1 @@
-export {default} from './PromptShell';
+export { default } from "./PromptShell";

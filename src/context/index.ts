@@ -1,1 +1,1 @@
-export { PromptProvider, useTerminal } from './PromptContext';
+export { PromptProvider, usePrompt } from "./PromptContext";

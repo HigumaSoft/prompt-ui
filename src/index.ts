@@ -1,4 +1,4 @@
-import { PromptProvider, useTerminal } from "./context";
+import { PromptProvider, usePrompt } from "./context";
 import PromptShell from "./components/PromptShell";
 
-export { PromptProvider, useTerminal, PromptShell };
+export { PromptProvider, usePrompt, PromptShell };
