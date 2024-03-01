@@ -1,9 +1,15 @@
 export interface PromptContext {
-  active: boolean;
-  setActive: React.Dispatch<React.SetStateAction<boolean>>;
+  commandLineActive: boolean;
+  setCommandLineActive: React.Dispatch<React.SetStateAction<boolean>>;
   executeCommand: (command: CommandProps) => void;
   commandOutput: CommandWithOutput[];
   setCommandOutput: React.Dispatch<React.SetStateAction<CommandWithOutput[]>>;
+  caretPosition: number;
+  setCaretPosition: React.Dispatch<React.SetStateAction<number>>;
+  inputRef: React.MutableRefObject<HTMLInputElement | null>;
+  setCaretAtPosition: (position: number) => void;
+  isMouseDown: boolean;
+  setIsMouseDown: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface PromptUISettings {}

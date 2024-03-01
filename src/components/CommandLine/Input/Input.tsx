@@ -1,17 +1,19 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { usePrompt } from "../../../context/PromptContext";
 import Caret from "../Caret";
 
 const Input: React.FC = () => {
-  const { active, setActive, executeCommand } = usePrompt();
+  const {
+    executeCommand,
+    setCaretPosition,
+    commandLineActive,
+    caretPosition,
+    inputRef,
+    isMouseDown,
+  } = usePrompt();
   const [input, setInput] = useState<string>("");
 
-  const inputRef = useRef<HTMLInputElement>(null);
-  active && inputRef.current?.focus();
-
-  const focusLoose = () => {
-    setActive(false);
-  };
+  commandLineActive && inputRef.current?.focus();
 
   const handleInput = (e: React.ChangeEvent<HTMLDivElement>) => {
     const userInput = e.target.textContent || "";
@@ -19,6 +21,10 @@ const Input: React.FC = () => {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (isMouseDown) {
+      // Prevent default behavior only when isMouseDown is true
+      e.preventDefault();
+    }
     switch (e.key) {
       case "Enter":
         handleInputEnd(e);
@@ -30,33 +36,28 @@ const Input: React.FC = () => {
         e.preventDefault();
         break;
       default:
+        e.key.length === 1 && setCaretPosition(caretPosition + 1);
     }
   };
   const handleInputEnd = (e: React.KeyboardEvent<HTMLDivElement>) => {
     e.preventDefault();
     executeCommand({ command: input });
     setInput("");
+    setCaretPosition(0);
     e.currentTarget.textContent = "";
   };
-
-  useEffect(() => {
-    if (active) {
-      inputRef.current?.focus();
-    }
-  }, [active]);
 
   return (
     <>
       <div
-        contentEditable
+        contentEditable={commandLineActive}
         ref={inputRef}
-        onBlur={focusLoose}
         onKeyDown={handleKeyDown}
         onInput={handleInput}
         style={{
           outline: "none",
           width: "auto",
-          caretColor: "transparent",
+          caretColor: "red",
         }}
       ></div>
       <Caret />

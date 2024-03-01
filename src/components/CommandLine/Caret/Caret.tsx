@@ -3,9 +3,9 @@ import { CaretProps } from "../../../types";
 import { usePrompt } from "../../../context";
 
 const Caret: React.FC<CaretProps> = () => {
-  const { active } = usePrompt();
+  const { commandLineActive } = usePrompt();
   return (
-    active && (
+    commandLineActive && (
       <span
         style={{
           backgroundColor: "green",

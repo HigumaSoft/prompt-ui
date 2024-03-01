@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useRef, useState } from "react";
 import { CommandProps, CommandWithOutput, PromptContext } from "../types";
 
 const PromptContext = createContext<PromptContext | undefined>(undefined);
@@ -6,8 +6,30 @@ const PromptContext = createContext<PromptContext | undefined>(undefined);
 export const PromptProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [active, setActive] = useState(false);
+  const [commandLineActive, setCommandLineActive] = useState(false);
   const [commandOutput, setCommandOutput] = useState<CommandWithOutput[]>([]);
+  const [caretPosition, setCaretPosition] = useState(0);
+  const [isMouseDown, setIsMouseDown] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const setCaretAtPosition = (position: number) => {
+
+    if (!inputRef.current) return;
+    const range = document.createRange();
+    const selection = window.getSelection();
+    if (!selection) return;
+    inputRef.current?.focus();
+    const textNode = inputRef.current.firstChild;
+    if (!textNode || textNode.nodeType !== Node.TEXT_NODE) return;
+    const maxLength = textNode.nodeValue?.length || 0;
+
+    position = Math.max(0, Math.min(position, maxLength));
+
+    range.setStart(textNode, position);
+    range.collapse(true);
+
+    selection.removeAllRanges();
+    selection.addRange(range);
+  };
 
   const executeCommand = (command: CommandProps) => {
     console.log(command);
@@ -20,11 +42,17 @@ export const PromptProvider: React.FC<{ children: React.ReactNode }> = ({
   return (
     <PromptContext.Provider
       value={{
-        active,
-        setActive,
+        commandLineActive,
+        setCommandLineActive,
         executeCommand,
         commandOutput,
         setCommandOutput,
+        caretPosition,
+        setCaretPosition,
+        inputRef,
+        setCaretAtPosition,
+        isMouseDown,
+        setIsMouseDown,
       }}
     >
       {children}
