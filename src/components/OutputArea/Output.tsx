@@ -12,7 +12,6 @@ const Output: React.FC<OutputProps> = () => {
     <>
       {commandOutput.map(
         (record, idx) => (
-          console.log(record),
           (
             <article key={`${idx}`}>
               <Prompt />

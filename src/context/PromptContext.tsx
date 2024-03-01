@@ -32,7 +32,6 @@ export const PromptProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const executeCommand = (command: CommandProps) => {
-    console.log(command);
     switch (command) {
       default:
         setCommandOutput([...commandOutput, { command, output: [] }]);

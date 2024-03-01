@@ -22,11 +22,9 @@ const PromptShell: React.FC = () => {
     setCommandLineActive(clickedInsidePromptShell);
     if (!clickedInsidePromptShell) return;
     setIsMouseDown(true);
-    // setCommandLineActive(clickedInsidePromptShell);
     document.addEventListener("mouseup", handleMouseUp);
     if (clickedInsideInput) return;
     event.preventDefault();
-    console.log("set command line active", clickedInsidePromptShell);
     setCaretAtPosition(caretPosition);
   };
 
