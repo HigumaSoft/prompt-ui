@@ -1,20 +1,18 @@
 import React from "react";
 import { CaretProps } from "../../../types";
-import { usePrompt } from "../../../context";
 
-const Caret: React.FC<CaretProps> = () => {
-  const { commandLineActive } = usePrompt();
+const Caret: React.FC<CaretProps> = ({ letter }) => {
   return (
-    commandLineActive && (
-      <span
-        style={{
-          backgroundColor: "green",
-          color: "black",
-        }}
-      >
-        {"\u00A0\u00A0"}
-      </span>
-    )
+    <span
+      style={{
+        backgroundColor: "green",
+        color: "black",
+        zIndex: 10,
+        position: "absolute",
+      }}
+    >
+      {letter || "\u00A0\u00A0"}
+    </span>
   );
 };
 

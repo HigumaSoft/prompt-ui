@@ -9,8 +9,9 @@ const CommandLine = () => {
     <div
       style={{
         backgroundColor: "transparent",
-        display: "flex",
-        alignItems: "center",
+        display: "inline",
+        position: "relative",
+        overflowWrap: "break-word",
       }}
     >
       <Prompt />

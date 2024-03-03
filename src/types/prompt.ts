@@ -1,15 +1,17 @@
+import React from "react";
+
 export interface PromptContext {
   commandLineActive: boolean;
   setCommandLineActive: React.Dispatch<React.SetStateAction<boolean>>;
-  executeCommand: (command: CommandProps) => void;
-  commandOutput: CommandWithOutput[];
-  setCommandOutput: React.Dispatch<React.SetStateAction<CommandWithOutput[]>>;
-  caretPosition: number;
-  setCaretPosition: React.Dispatch<React.SetStateAction<number>>;
-  inputRef: React.MutableRefObject<HTMLInputElement | null>;
+  executeCommand: (command: string) => void;
+  outputHistoryRef: React.MutableRefObject<CommandWithOutput[]>;
+  // setOutputHistory: React.Dispatch<React.SetStateAction<CommandWithOutput[]>>;
+  inputRef: React.MutableRefObject<HTMLDivElement | null>;
+  promptShellRef: React.MutableRefObject<HTMLDivElement | null>;
+  caretPositionRef: React.MutableRefObject<number>;
   setCaretAtPosition: (position: number) => void;
-  isMouseDown: boolean;
-  setIsMouseDown: React.Dispatch<React.SetStateAction<boolean>>;
+  handleMouseUp: () => void;
+  isMouseDownRef: React.MutableRefObject<boolean>;
 }
 
 export interface PromptUISettings {}
@@ -20,9 +22,13 @@ export interface CommandProps {
   args?: string[];
 }
 
+export interface CommandMap {
+  [command: string]: (command: CommandProps) => unknown;
+}
+
 export interface CommandWithOutput {
   command: CommandProps;
-  output: string[];
+  output: string[] | string | unknown;
 }
 
 export interface PromptProps {
@@ -31,6 +37,7 @@ export interface PromptProps {
 }
 export interface CaretProps {
   isActive?: boolean;
+  letter?: string;
 }
 export interface UserInput {}
 export interface OutputProps {
