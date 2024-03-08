@@ -1,5 +1,5 @@
 import React from "react";
-import { PromptProps } from "../../../types";
+import { PromptProps } from "../../types";
 
 const Prompt: React.FC<PromptProps> = ({ prompt = "$", prefix = "" }) => {
   return (

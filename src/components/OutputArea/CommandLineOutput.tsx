@@ -1,20 +1,20 @@
 import React from "react";
 import { CommandProps } from "../../types";
 import Prompt from "../Prompt";
-
-const Command: React.FC<CommandProps> = ({ command }) => {
+const CommandLineOutput: React.FC<CommandProps> = ({ command, args }) => {
   return (
     <div
       style={{
+        backgroundColor: "transparent",
         display: "inline",
         position: "relative",
-        overflowWrap: "break-word"
+        overflowWrap: "break-word",
       }}
     >
       <Prompt />
-      <span>{command}</span>
+      {command} {args ? ` ${args.join(" ")}` : ""}
     </div>
   );
 };
 
-export default Command;
+export default CommandLineOutput;

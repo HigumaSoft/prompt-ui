@@ -1,17 +1,32 @@
-import React from "react";
+import React, { Dispatch } from "react";
+import {
+  CommandLineAction,
+  CommandLineState,
+  InputAction,
+  InputState,
+} from "./interface";
 
 export interface PromptContext {
-  commandLineActive: boolean;
-  setCommandLineActive: React.Dispatch<React.SetStateAction<boolean>>;
-  executeCommand: (command: string) => void;
+  // commandLineActive: boolean;
+  // setCommandLineActive: Dispatch<SetStateAction<boolean>>;
+  executeCommand: (command: string, callback: () => void | null) => unknown;
   outputHistoryRef: React.MutableRefObject<CommandWithOutput[]>;
-  // setOutputHistory: React.Dispatch<React.SetStateAction<CommandWithOutput[]>>;
   inputRef: React.MutableRefObject<HTMLDivElement | null>;
+  isExecutingCommandRef: React.MutableRefObject<boolean>;
   promptShellRef: React.MutableRefObject<HTMLDivElement | null>;
   caretPositionRef: React.MutableRefObject<number>;
   setCaretAtPosition: (position: number) => void;
-  handleMouseUp: () => void;
   isMouseDownRef: React.MutableRefObject<boolean>;
+  call: (...args: []) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  setCall: (callback: any) => void;
+  renderOutput: (...args: []) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  setRenderOutput: (callback: any) => void;
+  commandLineState: CommandLineState;
+  dispatchCommandLineState: Dispatch<CommandLineAction>;
+  inputState: InputState;
+  dispatchInputState: Dispatch<InputAction>;
 }
 
 export interface PromptUISettings {}
@@ -22,13 +37,17 @@ export interface CommandProps {
   args?: string[];
 }
 
+export interface OutputProps {
+  output?: string[];
+}
+
 export interface CommandMap {
-  [command: string]: (command: CommandProps) => unknown;
+  [command: string]: (command: CommandProps) => string | string[];
 }
 
 export interface CommandWithOutput {
   command: CommandProps;
-  output: string[] | string | unknown;
+  output: OutputProps;
 }
 
 export interface PromptProps {

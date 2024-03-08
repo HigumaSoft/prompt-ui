@@ -1,36 +1,34 @@
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { createContext, useContext, useRef } from "react";
 import {
   CommandMap,
   CommandProps,
   CommandWithOutput,
   PromptContext,
 } from "../types";
+import { useSignal } from "../utils/UseSignal";
+import { useCommandLine } from "../hooks/UseCommandLine";
+import { useInput } from "../hooks/UseInput";
+import { useHistory } from "../hooks/UseHistory";
 
 const PromptContext = createContext<PromptContext | undefined>(undefined);
 
 export const PromptProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  console.log("prompt provider");
-  const [commandLineActive, setCommandLineActive] = useState(false);
-  // const [outputHistory, setOutputHistory] = useState<CommandWithOutput[]>([]);
+  console.log("render prompt provider");
+  const [commandLineState, dispatchCommandLineState] = useCommandLine();
+  const [inputState, dispatchInputState] = useInput();
+  const [historyState, dispatchHistoryState] = useHistory();
   const outputHistoryRef = useRef<CommandWithOutput[]>([]);
-  const [commandHistory, setCommandHistory] = useState<string[]>([]);
-  console.log(outputHistoryRef.current);
 
   // const [commandOutput, setCommandOutput] = useState<CommandWithOutput>();
+  const isExecutingCommandRef = useRef(false);
   const isMouseDownRef = useRef(false);
   const caretPositionRef = useRef(0);
   const promptShellRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  // const currentOutputRef = useRef<CommandWithOutput | null>(null);
   const setCaretAtPosition = (position: number) => {
-    console.log("setCaretAtPosition", position);
     if (!inputRef.current) return;
     const range = document.createRange();
     const selection = window.getSelection();
@@ -38,7 +36,6 @@ export const PromptProvider: React.FC<{ children: React.ReactNode }> = ({
     inputRef.current?.focus();
     const textNode = inputRef.current.firstChild;
     if (!textNode || textNode.nodeType !== Node.TEXT_NODE) {
-      console.log("no text node");
       return;
     }
     const maxLength = textNode.nodeValue?.length || 0;
@@ -54,19 +51,25 @@ export const PromptProvider: React.FC<{ children: React.ReactNode }> = ({
     selection.addRange(range);
   };
 
-  const recordCommand = (command: string) => {
-    setCommandHistory([...commandHistory, command]);
+  const recordCommand = (userInput: string) => {
+    dispatchCommandLineState({
+      type: "ADD_TO_INPUT_HISTORY",
+      payload: userInput,
+    });
   };
+
+  // Example usage:
+  const [call, setCall] = useSignal();
+  const [renderOutput, setRenderOutput] = useSignal();
 
   // TODO fix this, it does not work properly because useState is asynchronous
   const clearCommandOutput = () => {
-    console.log("Clearing command output...");
+    ({
+      type: "CLEAR_COMMAND_OUTPUT",
+    });
+    // console.log("Clearing command output...");
     // setOutputHistory([]);
-    return null;
-  };
-
-  const printToConsole = (command: CommandProps) => {
-    console.log("Hello, world!", command);
+    return "";
   };
 
   const commandNotFound = (command: CommandProps) => {
@@ -77,113 +80,76 @@ export const PromptProvider: React.FC<{ children: React.ReactNode }> = ({
     return "<span style='color: red'>help</span>";
   };
 
+  const recordToHistory = () => {
+    // const lines = [];
+    // dispatchHistoryState({
+    //   type: "ADD_TO_OUTPUT_HISTORY",
+    //   payload: lines,
+    // });
+  };
+
   const printHistory = () => {
-    return commandHistory.map((command) => {
-      // const argsString = command.args ? ` ${command.args.join(" ")}` : ""
-      // return `${command.command}${argsString}`
-      return command;
-    });
+    return [...commandLineState.inputHistory, "history"];
   };
 
   const builtinCommands: CommandMap = {
     clear: clearCommandOutput,
-    hello: printToConsole,
     help: printHelp,
     history: printHistory,
     not_found: commandNotFound,
   };
 
-  const executeCommand = (command: string) => {
+  const parseCommand = (command: string): CommandProps => {
     const parts = command.split(" ");
     const commandName = parts[0] || command;
     const commandArgs = parts.slice(1);
-    // const { command } = commandProps;
-    recordCommand(command);
-    // // Parse the command
-    const commandProps: CommandProps = {
+    return {
       command: commandName,
       args: commandArgs,
     };
+  };
 
-    outputHistoryRef.current.push({
-      command: commandProps,
-      output: builtinCommands[commandName]!(commandProps),
-    });
-    // let output: unknown;
+  const executeCommand = (command: string, callback: () => void) => {
+    recordCommand(command);
+
+    const commandProps = parseCommand(command);
+    let output: unknown;
     // if (command === "clear") {
-    //   setOutputHistory([{ command: commandProps, output: [] }]);
+    //   outputHistoryRef.current.push({ command: commandProps, output: [] });
     //   return;
     // }
-    // try {
-    //   output = (builtinCommands[command]! || builtinCommands.not_found)(
-    //     commandProps
-    //   );
-    // } catch (error) {
-    //   console.log(error);
-    //   output = "" + error;
-    // }
+    try {
+      output = (builtinCommands[command]! || builtinCommands.not_found)(
+        commandProps
+      );
+    } catch (error) {
+      output = "" + error;
+    }
 
-    // setOutputHistory([
-    //   ...outputHistory,
-    //   {
-    //     command: commandProps,
-    //     output,
-    //   },
-    // ]);
+    const command_with_output = { command: commandProps, output };
+    call(command_with_output);
+    callback();
   };
-
-  const handleMouseUp = () => {
-    isMouseDownRef.current = false;
-    inputRef.current?.focus();
-    document.removeEventListener("mouseup", handleMouseUp);
-  };
-
-  const handleMouseDownHandler = (event: MouseEvent) => {
-    const clickedInsidePromptShell = promptShellRef.current?.contains(
-      event.target as Node
-    );
-    if (typeof clickedInsidePromptShell === "undefined") return;
-    setCommandLineActive(clickedInsidePromptShell);
-    if (!clickedInsidePromptShell) return;
-    isMouseDownRef.current = true;
-    const promptComponents = Array.from(
-      promptShellRef?.current?.children ?? []
-    );
-    const clickedOnChild = promptComponents.some((child) =>
-      child.contains(event.target as Node)
-    );
-    document.removeEventListener("mouseup", handleMouseUp);
-    document.addEventListener("mouseup", handleMouseUp);
-    if (clickedOnChild) return;
-    event.preventDefault();
-    setCaretAtPosition(caretPositionRef.current);
-  };
-
-  useEffect(() => {
-    // Attach the event listener when the component mounts
-    document.addEventListener("mousedown", handleMouseDownHandler);
-
-    // Detach the event listener when the component unmounts
-    return () => {
-      document.removeEventListener("mousedown", handleMouseDownHandler);
-    };
-  }, []);
 
   return (
     <PromptContext.Provider
       value={{
-        commandLineActive,
-        setCommandLineActive,
         executeCommand,
-        // outputHistory,
-        // setOutputHistory,
         outputHistoryRef,
         caretPositionRef,
         inputRef,
         setCaretAtPosition,
-        handleMouseUp,
         isMouseDownRef,
+        isExecutingCommandRef,
         promptShellRef,
+        call,
+        setCall,
+        renderOutput,
+        setRenderOutput,
+        commandLineState,
+        dispatchCommandLineState,
+        inputState,
+        dispatchInputState,
       }}
     >
       {children}
