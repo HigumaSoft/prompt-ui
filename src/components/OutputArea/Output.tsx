@@ -10,6 +10,7 @@ const Output: React.FC<OutputProps> = () => {
     <>
       <ExecutedOutput />
       <ExecutingOutput />
+      <br />
     </>
   );
 };

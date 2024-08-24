@@ -2,6 +2,11 @@ import React from "react";
 import { CaretProps } from "../../../types";
 
 const Caret: React.FC<CaretProps> = ({ letter }) => {
+  const EMPTY_CARET = "\u00A0\u00A0";
+
+  const isEmpty = (letter: string | undefined): boolean => {
+    return !letter || letter === " ";
+  };
   return (
     <span
       style={{
@@ -11,7 +16,7 @@ const Caret: React.FC<CaretProps> = ({ letter }) => {
         position: "absolute",
       }}
     >
-      {letter || "\u00A0\u00A0"}
+      {isEmpty(letter) ? EMPTY_CARET : letter}
     </span>
   );
 };

@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { usePrompt } from "../../../context/PromptContext";
 import Caret from "../Caret";
+import { PromptOperation } from "../../../types";
 
 const Input: React.FC = () => {
   const {
@@ -8,9 +9,9 @@ const Input: React.FC = () => {
     inputState,
     dispatchInputState,
     dispatchCommandLineState,
-    inputRef,
-    caretPositionRef,
   } = usePrompt();
+
+  const inputRef = useRef<HTMLInputElement>(null);
 
   console.log("render input");
   const resetCommandLine = () => {
@@ -23,7 +24,6 @@ const Input: React.FC = () => {
       type: "SET_ACTIVE",
       payload: true,
     });
-    caretPositionRef.current = 0;
   };
 
   const setStateAfterExecution = () => {
@@ -38,9 +38,24 @@ const Input: React.FC = () => {
     dispatchInputState({
       type: "HANDLE_INPUTTED_CHARACTER",
       payload: e,
-      callback: handleInputEnd,
+      callback: handleInput,
     });
   };
+
+  const handleInput = (operation: PromptOperation) => {
+    switch (operation) {
+      case "EXECUTE":
+        handleInputEnd;
+        break;
+      case "AUTOCOMPLETE":
+        handleAutoComplete();
+        break;
+      default:
+      // do nothing
+    }
+  };
+
+  const handleAutoComplete = () => {};
   const handleInputEnd = () => {
     dispatchInputState({
       type: "SET_ACTIVE",

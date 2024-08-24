@@ -1,20 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { usePrompt } from "../../context";
-import Command from "./Command";
-import CommandOutput from "./CommandOutput";
-import { CommandWithOutput } from "../../types";
 
 const ExecutedOutput: React.FC = () => {
-  const [executedOutput, setExecutedOutput] = useState<CommandWithOutput[]>([]);
-  const { setRenderOutput } = usePrompt();
-  console.log(executedOutput);
-  setRenderOutput(setExecutedOutput);
+  const { historyState } = usePrompt();
   return (
     <>
-      {executedOutput.map((record, idx) => (
+      {historyState.outputHistory.map((record, idx) => (
         <article key={`${idx}`}>
-          <Command {...record.command} />
-          <CommandOutput output={record.output} />
+          {record.command}
+          {record.output}
         </article>
       ))}
     </>

@@ -1,8 +1,8 @@
 import React from "react";
-import { CommandProps } from "../../types";
+import { CommandInterface } from "../../types";
 import Prompt from "../Prompt";
 
-const Command: React.FC<CommandProps> = ({ command }) => {
+const Command: React.FC<CommandInterface> = ({ command }) => {
   return (
     <div
       style={{

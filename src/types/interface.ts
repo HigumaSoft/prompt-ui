@@ -1,4 +1,5 @@
 import { CommandWithOutput } from "./prompt";
+import { PromptOperation } from "./types";
 
 export interface CommandLineState {
   input: string;
@@ -48,7 +49,7 @@ export interface EnableCommandLine {
 export interface HandleInputtedCharacterAction {
   type: "HANDLE_INPUTTED_CHARACTER";
   payload: React.KeyboardEvent<HTMLDivElement>;
-  callback?: () => void;
+  callback?: (action: PromptOperation) => void;
 }
 
 export interface AddToInputHistoryAction {

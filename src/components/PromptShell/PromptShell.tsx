@@ -6,10 +6,7 @@ import { usePrompt } from "../../context";
 const PromptShell: React.FC = () => {
   console.log("render prompt shell");
   const promptShellRef = React.useRef<HTMLDivElement>(null);
-  const {
-    dispatchInputState,
-    setCaretAtPosition,
-  } = usePrompt();
+  const { dispatchInputState} = usePrompt();
 
   const handleMouseUp = () => {
     dispatchInputState({
@@ -42,7 +39,6 @@ const PromptShell: React.FC = () => {
     document.addEventListener("mouseup", handleMouseUp);
     if (clickedOnChild) return;
     event.preventDefault();
-    setCaretAtPosition(0);
   };
 
   useEffect(() => {

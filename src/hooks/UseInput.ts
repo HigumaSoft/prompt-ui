@@ -1,5 +1,5 @@
 import { Dispatch, useReducer } from "react";
-import { InputAction, InputState } from "../types";
+import { InputAction, InputState, PromptOperation } from "../types";
 
 export const initialState: InputState = {
   caretPosition: 0,
@@ -9,10 +9,7 @@ export const initialState: InputState = {
   afterCaret: "",
 };
 
-export const reducer = (
-  state: InputState,
-  action: InputAction
-): InputState => {
+export const reducer = (state: InputState, action: InputAction): InputState => {
   console.log(state);
   switch (action.type) {
     case "SET_CARET_POSITION":
@@ -47,7 +44,7 @@ export const reducer = (
 const handleKeydownEvent = (
   state: InputState,
   e: React.KeyboardEvent<HTMLDivElement>,
-  callback?: () => void
+  callback?: (action: PromptOperation) => void
 ): InputState => {
   const pressedKey: string = e.key;
   const newState: InputState = { ...state };
@@ -60,7 +57,10 @@ const handleKeydownEvent = (
 
   switch (pressedKey) {
     case "Enter":
-      callback!();
+      callback!("EXECUTE");
+      break;
+    case "Tab":
+      callback!("AUTOCOMPLETE");
       break;
     case "ArrowUp":
       break;
@@ -86,7 +86,6 @@ const handleKeydownEvent = (
       newState.beforeCaret = newState.beforeCaret.slice(0, -1);
       break;
     default:
-      // e.key.length === 1 && caretPositionRef.current++;
       if (printable) {
         newState.caretPosition++;
         newState.beforeCaret = newState.beforeCaret + pressedKey;

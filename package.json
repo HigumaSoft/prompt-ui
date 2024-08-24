@@ -21,7 +21,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/charopevez/prompt-ui.git"
+    "url": "git+https://github.com/HigumaSoft/prompt-ui.git"
   },
   "keywords": [
     "react",
@@ -30,11 +30,11 @@
     "prompt",
     "component"
   ],
-  "author": "Dmitry Mikhaylov",
+  "author": "Higuma Soft",
   "bugs": {
-    "url": "https://github.com/charopevez/prompt-ui/issues"
+    "url": "https://github.com/HigumaSoft/prompt-ui/issues"
   },
-  "homepage": "https://github.com/charopevez/prompt-ui#readme",
+  "homepage": "https://github.com/HigumaSoft/prompt-ui#readme",
   "license": "MIT",
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
